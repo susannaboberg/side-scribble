@@ -1,25 +1,36 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Side Notes</title>
-  <link rel="stylesheet" href="sidepanel.css">
-</head>
-<body>
+<html lang="en" data-theme = "light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Side Notes</title>
+        <link rel="stylesheet" href="sidepanel.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/iconoir-icons/iconoir@main/css/iconoir.css" />
+    </head>
+
+    <body>
     <div class="header">
-        <h1>My Notes</h1>
-        <button id="search" class="menu-item">Search</button>
-        <button id="delete-all" class="menu-item" img src="icons/trash.png"></button>
-
+        <button id="create-note" class="create-note-header">
+            <i class="iconoir-notes"></i>  
+            Create Note</button>
+        <div class="header-controls">
+        <button id="search-toggle" class="menu-item">
+            <i class="iconoir-search"></i>        
+        </button>
+        <button id="delete-all" class="menu-item">
+            <i class="iconoir-trash icon"></i>
+        </button>
+        </div>
     </div>
-    <div><button id="create-note" class="create-note">Create New Note</button></div>
-  <div id="notes-container"></div>
 
-  <footer>
-    <!--<button id="toggle-dark-mode" class="dark-mode-toggle">🌙 Dark Mode</button> -->
-  </footer>
-  
-  <script src="sidepanel.js"></script>
-</body>
+    <div id="search-container" class="search-container">
+        <input type="text" id="search-input" class="search-input" placeholder="Search notes by title or content...">
+        <div id="search-results" class="search-results"></div>
+    </div>
+
+    <div id="notes-container"></div>
+
+    <script src="sidepanel.js"></script>
+    </body>
+
 </html>

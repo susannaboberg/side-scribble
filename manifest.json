@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "NoteIt",
-  "description": "small aesthetic changes",
-  "version": "3.0",
+  "name": "SideScribble",
+  "description": "re-doing main interface",
+  "version": "2.0",
   "side_panel": {
     "default_path": "sidepanel.html"
   },
