@@ -12,6 +12,7 @@ let isSearching = false;
 
 function setupDarkMode() {
     const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    //const isDarkMode = true;
     if (isDarkMode) {
         document.body.classList.add('dark-mode');
     }
@@ -39,14 +40,13 @@ function updateNoteLinkData(noteElement, url, urlTitle) {
     const updateBtn = noteElement.querySelector('.update-link-btn');
     
     urlDisplay.href = url;
-   // urlDisplay.setAttribute('href', url);  // store the raw URL
     urlDisplay.textContent = urlTitle;
-    //urlDisplay.setAttribute('textContent', urlTitle);
     
-    // Visual feedback
-    updateBtn.className = 'update-link-btn iconoir-check icon'
+    updateBtn.classList.remove('iconoir-refresh-double');
+    updateBtn.classList.add('iconoir-check');
     setTimeout(() => {
-    updateBtn.className = 'update-link-btn iconoir-refresh-double icon'
+      updateBtn.classList.remove('iconoir-check');
+      updateBtn.classList.add('iconoir-refresh-double');
     }, 500);
 
     setTimeout(() => {
@@ -101,11 +101,18 @@ function createNoteElement(title = '', body = '', placeholder = 'Type here', url
     titleInput.className = 'title-text';
     titleInput.addEventListener('input', () => saveNotes());
 
+    titleInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const bodyText = noteDiv.querySelector('.body-text');
+      if (bodyText) {
+        bodyText.focus();
+      }
+    }
+    });
+
     const copyBtn = document.createElement('button');
-    copyBtn.className = 'copy-btn';
-    const copyIcon = document.createElement('i');
-    copyIcon.className = 'iconoir-copy icon';
-    copyBtn.appendChild(copyIcon);
+    copyBtn.classList = 'copy-btn hover-button iconoir-copy icon';
     copyBtn.addEventListener('click', () => copyNoteContent(noteDiv));
 
     headerDiv.appendChild(titleInput);
@@ -113,7 +120,7 @@ function createNoteElement(title = '', body = '', placeholder = 'Type here', url
 
     // Body div (contentEditable for rich text)
     const bodyDiv = document.createElement('div');
-    bodyDiv.className = 'body-text';
+    bodyDiv.classList = 'body-text';
     bodyDiv.contentEditable = true;
     bodyDiv.placeholder = placeholder;
     bodyDiv.innerHTML = body || '';
@@ -125,20 +132,36 @@ function createNoteElement(title = '', body = '', placeholder = 'Type here', url
 
     bodyDiv.addEventListener('keydown', (e) => {
     if (e.key === 'Tab') {
-        e.preventDefault();
-        document.execCommand('insertHTML', false, '&nbsp;&nbsp;&nbsp;&nbsp;');
+      e.preventDefault();
+      document.execCommand('insertHTML', false, '&nbsp;&nbsp;&nbsp;&nbsp;');
+    }
+    
+    // Handle Enter key for list continuation
+    if (e.key === 'Enter') {
+      const selection = window.getSelection();
+      const parentList = selection.anchorNode.parentElement?.closest('ol, ul');
+      
+      // If we're in a list and the current item is empty, break out of the list
+      if (parentList) {
+        const currentItem = selection.anchorNode.parentElement?.closest('li');
+        if (currentItem && currentItem.innerText.trim() === '') {
+          e.preventDefault();
+          document.execCommand('outdent');
+          document.execCommand('formatBlock', false, 'p');
+        }
+      }
     }
     });
 
     // Footer with URL and delete button
     const footerDiv = document.createElement('div');
-    footerDiv.className = 'note-footer';
+    footerDiv.classList = 'note-footer';
 
     const urlSection = document.createElement('div');
-    urlSection.className = 'url-section';
+    urlSection.classList = 'url-section';
 
     const urlDisplay = document.createElement('a');
-    urlDisplay.className = 'note-url';
+    urlDisplay.classList = 'note-url';
     urlDisplay.textContent = urlTitle || 'No URL';
     urlDisplay.href = url || '#';
     if (url) {
@@ -149,7 +172,7 @@ function createNoteElement(title = '', body = '', placeholder = 'Type here', url
     }
 
     const updateLinkBtn = document.createElement('button');
-    updateLinkBtn.className = 'update-link-btn iconoir-refresh-double icon';
+    updateLinkBtn.classList = 'update-link-btn iconoir-refresh-double icon hover-button';
     updateLinkBtn.title = 'Update to current page';
     updateLinkBtn.addEventListener('click', () => updateNoteLink(noteDiv));
 
@@ -157,14 +180,14 @@ function createNoteElement(title = '', body = '', placeholder = 'Type here', url
     urlSection.appendChild(updateLinkBtn);
 
     const dateDelDisplay = document.createElement('div');
-    dateDelDisplay.className = 'date-del-display';
+    dateDelDisplay.classList = 'date-del-display';
 
     const dateDisplay = document.createElement('p');
-    dateDisplay.className = 'date';
+    dateDisplay.classList = 'date';
     dateDisplay.textContent = date;
 
     const deleteIcon = document.createElement('button');
-    deleteIcon.className = 'delete-icon iconoir-trash icon';
+    deleteIcon.classList = 'delete-icon iconoir-trash icon hover-button';
     deleteIcon.addEventListener('click', () => deleteNote(noteId));
 
     dateDelDisplay.appendChild(dateDisplay);
@@ -187,21 +210,22 @@ function copyNoteContent(noteElement) {
     
     navigator.clipboard.writeText(content).then(() => {
     const copyBtn = noteElement.querySelector('.iconoir-copy');
-    copyBtn.className = 'iconoir-check icon';
+    //copyBtn.className = 'iconoir-check icon hover-button';
+    copyBtn.classList.remove('iconoir-copy');
+    copyBtn.classList.add('iconoir-check');
     setTimeout(() => {
-        copyBtn.className = 'iconoir-copy icon';
-    }, 750);
+        copyBtn.classList.remove('iconoir-check');
+        copyBtn.classList.add('iconoir-copy');
+        //copyBtn.className = 'iconoir-copy icon hover-button';
+    }, 500);
     });
 }
 
-// Save all notes to chrome.storage.sync
 function saveNotes() {
-    const notes = [];
-
-    //static node list
-    const noteElements = document.querySelectorAll('.note');
-    
-    noteElements.forEach((noteElement) => {
+  const noteElements = document.querySelectorAll('.note');
+  
+  noteElements.forEach((noteElement) => {
+    const noteId = noteElement.dataset.noteId;
     const title = noteElement.querySelector('.title-text').value;
     const body = noteElement.querySelector('.body-text').innerHTML;
     const placeholder = noteElement.querySelector('.body-text').placeholder;
@@ -209,24 +233,24 @@ function saveNotes() {
     const urlTitle = noteElement.querySelector('.note-url').textContent;
     const date = noteElement.querySelector('.date').textContent;
     const textAreaHeight = noteElement.querySelector('.body-text').style.minHeight;
-    const noteId = noteElement.dataset.noteId;
 
-    notes.unshift({ 
+    // Find and update the note in allNotes array instead of rebuilding
+    const noteIndex = allNotes.findIndex(note => note.id === noteId);
+    if (noteIndex !== -1) {
+      allNotes[noteIndex] = {
         id: noteId,
         title, 
         body, 
         placeholder,
-        url: (url && url !== '#' && !url.endsWith(window.location.href + '#')) ? url : '',
+        url: url === window.location.href + '#' ? '' : url, 
         urlTitle, 
         date, 
         textAreaHeight: parseInt(textAreaHeight, 10) || 80
-    });
-    });
-    
-    chrome.storage.sync.set({ notes });
-    
-    // Update allNotes for search
-    allNotes = [...notes].reverse();
+      };
+    }
+  });
+  
+  chrome.storage.sync.set({ notes: allNotes });
 }
 
 // Delete a note by ID
@@ -255,16 +279,12 @@ searchToggle.addEventListener('click', () => {
     searchContainer.classList.toggle('active');
 
     if (!isActive) {
-        //createNoteBtn.style.display = 'none';
-        searchToggle.style.scale = '1.05';
-        searchToggle.style.backgroundColor = 'white';
-        searchToggle.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.4)'
+        searchToggle.style.backgroundColor = 'rgb(229, 228, 228)';
         searchInput.focus()
 
         //hide notes when searching (to avoid reordering issues)
-        displayNotes([]);
+        //displayNotes([]);
     } else {
-        //createNoteBtn.style.display = 'block';
         isSearching = false;
         searchInput.value = '';
         searchResults.textContent = '';
@@ -335,7 +355,7 @@ createNoteBtn.addEventListener('click', () => {
         url: currentUrl, 
         urlTitle: currentTitle, 
         date: date, 
-        textAreaHeight: 80
+        textAreaHeight: 40
         });
 
         chrome.storage.sync.set({ notes }, () => {
