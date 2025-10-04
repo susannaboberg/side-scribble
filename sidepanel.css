@@ -8,6 +8,7 @@
   --dark-mode-note-hover: rgb(62, 62, 62);
 }
 
+
 * {
     box-sizing: border-box;
     /*
@@ -36,7 +37,9 @@ body {
 
   background: #fdfcfd;
 
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  /*font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;*/
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
   font-size: 14px;
   line-height: 1.35;
   color: #2c3e50;
@@ -58,7 +61,7 @@ i::before {
 
 /* create note button in header */
 .create-note-header {
-  width: 140px;
+  width: 150px;
   padding: 10px 16px;
 
   border: none;
@@ -66,9 +69,9 @@ i::before {
   background: var(--accent-color);
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 
-  font-size: 14px;
-  font-weight: 600;
-  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  font-family: "Nunito", sans-serif;
   color: white;
 
   display: flex;
@@ -98,7 +101,7 @@ i::before {
 
   font-size: 14px;
   font-weight: 500;
-  font-family: 'Inter', sans-serif;
+  font-family: "Nunito", sans-serif;
 
   cursor: pointer;
 }
@@ -119,19 +122,43 @@ i::before {
   padding: 10px;
   margin-bottom: 20px;
 
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--default-border);
   background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  box-shadow: 4.5px 4px 4px rgba(0, 0, 0, 0.08);
 
   display: none;
+  transition: all 0.3s ease;
+
 }
 
 .search-container.active {
   display: block;
   animation: slideDown 0.5s;
 
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.search-container.closing {
+  animation: slideUp 0.4s ease;
+}
+
+.search-container:hover {
+  box-shadow: 4.5px 10px 10px rgba(0, 0, 0, 0.08);
+}
+
+.search-container:has(.search-input:focus) {
+  box-shadow: 4.5px 10px 10px rgba(0, 0, 0, 0.08);
 }
 
 @keyframes slideDown {
@@ -149,12 +176,12 @@ i::before {
   width: 100%;
   padding: 12px 16px;
 
-  border: 2px solid #e1e8ed;
+  border: 1.5px solid #e1e8ed;
   border-radius: var(--default-border);
   background: white;
 
   font-size: 14px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Nunito", sans-serif;
 
   transition: border-color 0.3s ease;
 }
@@ -162,7 +189,6 @@ i::before {
 .search-input:focus {
   outline: none;
   border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .search-results {
@@ -210,12 +236,70 @@ i::before {
   transition: all 0.3s ease;
 }
 
+.note:has(.body-text:focus) {
+  box-shadow: 4.5px 8px 8px rgba(0, 0, 0, 0.15);
+}
+
+.note .body-text ul,
+.note .body-text ol {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  padding-left: 30px; /* Reduce indent from default 40px */
+}
+
+.note .body-text li {
+  margin-bottom: 2px;
+}
+
+/* Remove extra spacing between list and regular text */
+.note .body-text p + ul,
+.note .body-text p + ol {
+  margin-top: 4px;
+}
+
+.note .body-text ul + p,
+.note .body-text ol + p {
+  margin-top: 4px;
+}
+
+/* TODO: LOOK OVER */
+/* NOTE DRAGGING STYLING -------------------------------------------------------*/
+.note.dragging {
+  opacity: 0.6;
+  transform: scale(1.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  cursor: grabbing;
+}
+
+.note:not(.no-drag) {
+  cursor: move;
+}
+
+.note.no-drag {
+  cursor: default !important;
+}
+
+.note input.title-text,
+.note .body-text {
+  cursor: text !important; /* Keep text cursor in input fields */
+}
+/*
+.note.drag-over-top {
+  transform: translateY(10px);
+}
+
+.note.drag-over-bottom {
+  transform: translateY(-10px);
+}
+*/
 .note:hover {
   box-shadow: 2.5px 4px 4px rgba(0, 0, 0, 0.15);
 }
 
-.note:has(.body-text:focus) {
-  box-shadow: 4.5px 8px 8px rgba(0, 0, 0, 0.15);
+.note input.title-text,
+.note .body-text {
+  cursor: text;
 }
 
 /* NOTE HEADER ------------------------------------------*/
@@ -235,7 +319,9 @@ i::before {
   background: none;
   outline: none;
 
-  font-family: 'Inter', sans-serif;
+  font-family: "Nunito", sans-serif;
+
+  /*font-family: 'Inter', sans-serif;*/
   font-weight: 700;
   font-size: 19px;
   letter-spacing: -0.5px;
@@ -248,6 +334,10 @@ i::before {
   color: #95a5a6;
 }
 
+.note:has(input.title-text:focus) {
+  box-shadow: 4.5px 8px 8px rgba(0, 0, 0, 0.15);
+}
+
 .copy-btn {
   padding: 7px 7px;
   margin-left: 8px;
@@ -255,13 +345,15 @@ i::before {
   border: none;
   border-radius: 20px;
 
-  font-family: 'Inter', sans-serif;
+  font-family: "Nunito", sans-serif;
   font-size: 12px;
   font-weight: 500;
 
   align-items: center;
   cursor: pointer;
+  transition: all 0.3 ease;
 }
+
 
 
 /* NOTE BODY STYLING ----------------------------------------*/
@@ -276,7 +368,7 @@ i::before {
 
 
   font-size: 14px;
-  font-family: 'Inter', sans-serif; /*change*/
+  font-family: "Nunito", sans-serif;
   line-height: 1.35;
 
   transition: border-color 0.3s ease;
@@ -329,6 +421,7 @@ i::before {
 }
 
 .date-del-display {
+  color: rgb(117, 117, 117);
   display: flex;
   gap: 10px;
   align-items: center;
@@ -435,3 +528,5 @@ i::before {
         border-color: #4a5568;
     }
 
+
+    
