@@ -1,8 +1,26 @@
-:root {
-  --accent-color: rgb(102, 126, 234);
+:root { /*CHANGE: clean up variables*/
+  --accent-color: #667eea;
   --default-border: 10px;
   --less-border: 6px;
-  --icon-hover-color: #7f8c8d;;
+  --icon-hover-color: #7f8c8d;
+
+  --font-primary: "Nunito", sans-serif;
+
+  --font-size-title: 18px;
+  --font-size-body: 14px;
+  --font-size-small: 13px;
+
+  --font-weight-title: 700;
+  --font-weight-body: 400;
+  --font-weight-small: 400;
+
+  --letter-spacing-title: -0.5px;
+  --letter-spacing-body: normal;
+
+  --color-title: #2c3e50;
+  --color-body: #2c3e50;
+  --color-small: #7f8c8d;
+
   --dark-mode-primary: #2f2f2f;
   --dark-mode-icon-hover: #4c4c4c;
   --dark-mode-note-hover: rgb(62, 62, 62);
@@ -10,25 +28,10 @@
 
 
 * {
-    box-sizing: border-box;
-    /*
-    outline: 1px solid red;
-    */
+  box-sizing: border-box;
+  font-family: var(--font-primary);
+  /* outline: 1px solid red; */
 }
-
-.icon {
-  color: rgb(117, 117, 117);
-  background: transparent;
-}
-
-.note-header .icon::before {
-  font-size: 20px;
-}
-.note-footer .icon::before {
-  font-size:14px;
-}
-
-
 
 body {
   width: 100%;
@@ -37,19 +40,39 @@ body {
 
   background: #fdfcfd;
 
-  /*font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;*/
-  font-family: "Nunito", sans-serif;
-  font-optical-sizing: auto;
-  font-size: 14px;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
   line-height: 1.35;
-  color: #2c3e50;
+  color: var(--color-body);
 }
 
-i::before {
-    font-size: 20px;
-    font-weight: 500;
+/* ICON STYLING -----------------------------------------------------------------*/
+.icon {
+  color: #666666;
+  background: transparent;
 }
 
+/*menu items*/
+.create-note-header .icon {
+  font-size: 22px;
+  color: white;
+}
+.menu-item .icon::before {
+  font-size: 20px;
+}
+
+.note-header .icon::before {
+  font-size: 20px;
+}
+
+.note-footer .icon::before {
+  font-size: 14px;
+}
+
+.hover-button:hover {
+  background-color: rgb(229, 228, 228);
+}
 
 /* HEADER AND MENU STYLING --------------------------------------------------------*/
 .header {
@@ -61,17 +84,16 @@ i::before {
 
 /* create note button in header */
 .create-note-header {
-  width: 150px;
-  padding: 10px 16px;
+  width: 145px;
+  padding: 10px 15px;
 
   border: none;
   border-radius: var(--default-border);
   background: var(--accent-color);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 
+  font-family: var(--font-primary);
   font-size: 15px;
   font-weight: 800;
-  font-family: "Nunito", sans-serif;
   color: white;
 
   display: flex;
@@ -99,54 +121,24 @@ i::before {
   border-radius: 25px;
   background-color: transparent;
 
-  font-size: 14px;
-  font-weight: 500;
-  font-family: "Nunito", sans-serif;
-
   cursor: pointer;
 }
-
-#notes-container {
-  padding-top: 15px;
-  gap: 12px;
-
-  display: flex;
-  flex-direction: column;
-
-  border-top: solid 1px lightgray;
-}
-
 
 /* SEARCH STYLING ----------------------------------------------------*/
 .search-container {
   padding: 10px;
   margin-bottom: 20px;
 
-  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--default-border);
   background: rgba(255, 255, 255, 0.95);
-  box-shadow: 4.5px 4px 4px rgba(0, 0, 0, 0.08);
 
   display: none;
   transition: all 0.3s ease;
-
 }
 
 .search-container.active {
   display: block;
   animation: slideDown 0.5s;
-
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
 }
 
 .search-container.closing {
@@ -163,12 +155,25 @@ i::before {
 
 @keyframes slideDown {
   from {
-  opacity: 0;
-  transform: translateY(-20px);
+    opacity: 0;
+    transform: translateY(-20px);
   }
+
   to {
-  opacity: 1;
-  transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
   }
 }
 
@@ -180,24 +185,22 @@ i::before {
   border-radius: var(--default-border);
   background: white;
 
-  font-size: 14px;
-  font-family: "Nunito", sans-serif;
+  font-size: var(--font-size-body);
 
   transition: border-color 0.3s ease;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--accent-color);
 }
 
 .search-results {
   margin-top: 12px;
 
-  color: #666;
-  font-size: 13px;
+  color: #666666;
 
-  display: none; /* Hidden by default */
+  display: none;
 }
 
 .search-results.show {
@@ -206,15 +209,24 @@ i::before {
 
 .no-results {
   text-align: center;
-  color: #7f8c8d;
+  color: #666666;
   font-style: italic;
   margin: 40px 0;
 }
 
 /* INDIVIDUAL NOTE STYLING --------------------------------------------------------------*/
+#notes-container {
+  padding-top: 15px;
+  gap: 12px;
+
+  display: flex;
+  flex-direction: column;
+
+  border-top: solid 1px lightgray;
+}
 
 .note * {
-    background-color: white;
+  background-color: white;
 }
 
 .note {
@@ -222,9 +234,9 @@ i::before {
   padding-top: 10px;
 
   background: rgba(255, 255, 255, 0.95);
-  
+
   border: 1px solid rgba(255, 255, 255, 0.2);
-  
+
   border-radius: var(--default-border);
   backdrop-filter: blur(10px);
   outline: 1px solid rgb(230, 230, 230);
@@ -236,33 +248,14 @@ i::before {
   transition: all 0.3s ease;
 }
 
+.note:hover {
+  box-shadow: 2.5px 4px 4px rgba(0, 0, 0, 0.15);
+}
+
 .note:has(.body-text:focus) {
   box-shadow: 4.5px 8px 8px rgba(0, 0, 0, 0.15);
 }
 
-.note .body-text ul,
-.note .body-text ol {
-  margin-top: 4px;
-  margin-bottom: 4px;
-  padding-left: 30px; /* Reduce indent from default 40px */
-}
-
-.note .body-text li {
-  margin-bottom: 2px;
-}
-
-/* Remove extra spacing between list and regular text */
-.note .body-text p + ul,
-.note .body-text p + ol {
-  margin-top: 4px;
-}
-
-.note .body-text ul + p,
-.note .body-text ol + p {
-  margin-top: 4px;
-}
-
-/* TODO: LOOK OVER */
 /* NOTE DRAGGING STYLING -------------------------------------------------------*/
 .note.dragging {
   opacity: 0.6;
@@ -282,31 +275,14 @@ i::before {
 
 .note input.title-text,
 .note .body-text {
-  cursor: text !important; /* Keep text cursor in input fields */
-}
-/*
-.note.drag-over-top {
-  transform: translateY(10px);
-}
-
-.note.drag-over-bottom {
-  transform: translateY(-10px);
-}
-*/
-.note:hover {
-  box-shadow: 2.5px 4px 4px rgba(0, 0, 0, 0.15);
-}
-
-.note input.title-text,
-.note .body-text {
-  cursor: text;
+  cursor: text !important;
 }
 
 /* NOTE HEADER ------------------------------------------*/
 .note-header {
-  margin-left: 3px;
+  margin-left: 2px;
   margin-bottom: 2px;
-  
+
   display: flex;
   align-items: center;
 }
@@ -314,16 +290,12 @@ i::before {
 .note input.title-text {
   padding: 0;
 
-
   border: none;
   background: none;
   outline: none;
 
-  font-family: "Nunito", sans-serif;
-
-  /*font-family: 'Inter', sans-serif;*/
-  font-weight: 700;
-  font-size: 19px;
+  font-weight: var(--font-weight-title);
+  font-size: var(--font-size-title);
   letter-spacing: -0.5px;
   color: #2c3e50;
 
@@ -345,30 +317,20 @@ i::before {
   border: none;
   border-radius: 20px;
 
-  font-family: "Nunito", sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-
-  align-items: center;
   cursor: pointer;
-  transition: all 0.3 ease;
 }
-
-
 
 /* NOTE BODY STYLING ----------------------------------------*/
 .note .body-text {
   width: 100%;
   padding: 4px 6px;
-  padding-top: 0px; /*maybe change */
+  padding-top: 0px;
   padding-left: 4px;
   resize: vertical;
 
   border-radius: var(--less-border);
 
-
-  font-size: 14px;
-  font-family: "Nunito", sans-serif;
+  font-size: var(--font-size-body);
   line-height: 1.35;
 
   transition: border-color 0.3s ease;
@@ -376,25 +338,16 @@ i::before {
 
 .note .body-text:focus {
   outline: none;
-
 }
 
 .note-footer {
   margin-top: 12px;
 
-  font-size: 12px;
+  font-size: var(--font-size-small);
 
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.note-footer {
-  font-size: 12px;
-}
-
-.note-footer .icon {
-  font-size: 12px;
 }
 
 .url-section {
@@ -407,9 +360,8 @@ i::before {
 .note-footer .note-url {
   max-width: 200px;
 
-  color: #667eea;
+  color: var(--accent-color);
   text-decoration: none;
-  font-weight: 500;
   text-overflow: ellipsis;
 
   overflow: hidden;
@@ -421,7 +373,7 @@ i::before {
 }
 
 .date-del-display {
-  color: rgb(117, 117, 117);
+  color: #666666;
   display: flex;
   gap: 10px;
   align-items: center;
@@ -433,7 +385,7 @@ i::before {
 }
 
 .update-link-btn {
-  padding: 6px 6px;
+  padding: 8px 8px;
 
   border: none;
   border-radius: 20px;
@@ -443,7 +395,7 @@ i::before {
 }
 
 .delete-icon {
-  padding: 6px 6px;
+  padding: 8px 8px;
 
   border: none;
   border-radius: 20px;
@@ -452,81 +404,85 @@ i::before {
   flex-shrink: 0;
 }
 
-.hover-button:hover {
-  background-color: rgb(229, 228, 228);
-
-}
-
 /* DARK MODE ------------------------------------------------------------------------------------ */
 
-    body.dark-mode {
-        background: rgb(37, 37, 37);
-        color: #e2e8f0;
-    }
-
-    .dark-mode .hover-button:hover {
-      background: #4c4c4c;
-    }
-
-    .dark-mode #notes-container {
-        border-top: solid 1px rgb(71, 71, 71);
-    }
-
-    .dark-mode .note {
-      background: var(--dark-mode-primary);
-      outline: 1px solid rgb(71, 71, 71);
-      border: none;
-      transition: none;
-    }
-
-    .dark-mode .note * {
-    background-color: var(--dark-mode-primary);
-    transition: none;
+body.dark-mode {
+  background: rgb(37, 37, 37);
+  color: #e2e8f0;
 }
 
-    body.dark-mode .icon{
-        color: #a4a4a4;
-    }
+.dark-mode .hover-button:hover {
+  background: #616161 !important;
+}
 
-    .dark-mode .note input.title-text {
-      color: #e2e8f0;
-    }
+.dark-mode #notes-container {
+  border-top: solid 1px rgb(71, 71, 71);
+}
 
-    .dark-mode .note input.title-text::placeholder {
-      color: #7b7b7b;
-    }
+.dark-mode .note {
+  background: var(--dark-mode-primary);
+  outline: 1px solid rgb(71, 71, 71);
+  border: none;
+  transition: none;
+}
+
+.dark-mode .note * {
+  background-color: var(--dark-mode-primary);
+  transition: none;
+}
+
+body.dark-mode .icon {
+  color: #a4a4a4;
+}
+
+.dark-mode .create-note-header .icon {
+  color: white;
+}
+
+.dark-mode .create-note-header {
+  transition: none;
+  transform: none;
+}
+
+.dark-mode .create-note-header:hover {
+    box-shadow: none;
+    background: #44559f;
+    color: #bcc0c6;
+    transform: none;
+}
+
+.dark-mode .create-note-header:hover .icon {
+  color: #bcc0c6;
+}
+
+.dark-mode .note input.title-text {
+  color: #e2e8f0;
+}
+
+.dark-mode .note input.title-text::placeholder {
+  color: #7b7b7b;
+}
 
 
-    .dark-mode .note:hover {
-      background: rgb(62, 62, 62);
-    }
+.dark-mode .note:hover {
+  background: rgb(53, 53, 53);
+}
 
-    .dark-mode .note:hover * {
-      background-color: rgb(62, 62, 62);
+.dark-mode .note:hover * {
+  background-color: rgb(53, 53, 53);
 
-    }
+}
 
-/*
-    .dark-mode .note:hover {
-      box-shadow: 2.5px 4px 4px rgba(0, 0, 0, 0.5);
-    }
+.dark-mode .search-container {
+  background: var(--dark-mode-primary);
+}
+.dark-mode .search-input {
+  background: var(--dark-mode-primary);
+  color: #e2e8f0;
+  border-color: rgb(62, 62, 62);
+}
 
-    .dark-mode .note:has(.body-text:focus) {
-      box-shadow: 4.5px 8px 8px rgba(0, 0, 0, 0.15);
-    }
-*/
+.dark-mode .search-results {
+  color: #9b9b9b; 
+}
 
-
-
-
-
-
-
-    .dark-mode .search-input {
-        background: #2d3748;
-        color: #e2e8f0;
-        border-color: #4a5568;
-    }
-
-
-    

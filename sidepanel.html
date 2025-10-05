@@ -1,28 +1,30 @@
 <!DOCTYPE html>
-<html lang="en" data-theme = "light">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Side Notes</title>
-        <link rel="stylesheet" href="sidepanel.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/iconoir-icons/iconoir@main/css/iconoir.css" />
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
-    </head>
+<html lang="en" data-theme="light">
 
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SideScribble</title>
+    <link rel="stylesheet" href="sidepanel.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/iconoir-icons/iconoir@main/css/iconoir.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+</head>
+
+<body>
     <div class="header">
         <button id="create-note" class="create-note-header">
-            <i class="iconoir-notes"></i>  
-            Create Note</button>
+            <i class="iconoir-notes icon"></i>
+            Create Note
+        </button>
         <div class="header-controls">
-        <button id="search-toggle" class="menu-item hover-button">
-            <i class="iconoir-search icon"></i>        
-        </button>
-        <button id="delete-all" class="menu-item hover-button">
-            <i class="iconoir-trash icon"></i>
-        </button>
+            <button id="search-toggle" class="menu-item hover-button" aria-label="Search notes">
+                <i class="iconoir-search icon" aria-hidden="true"></i>
+            </button>
+            <button id="delete-all" class="menu-item hover-button" aria-label="Delete all notes">
+                <i class="iconoir-trash icon" aria-hidden="true"></i>
+            </button>
         </div>
     </div>
 
@@ -34,6 +36,6 @@
     <div id="notes-container"></div>
 
     <script src="sidepanel.js"></script>
-    </body>
+</body>
 
 </html>
